@@ -1,6 +1,6 @@
 package org.example;
 import java.util.Scanner;
-
+//DESEMBER D NYA DI KEJAR KEJAR POLISI INISIAL SOFYAN
 public class Main {
     public static void main(String[] args) {
         Manajemen manajemen = new Manajemen();
