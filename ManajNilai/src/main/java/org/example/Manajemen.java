@@ -9,17 +9,36 @@ public class Manajemen {
     private int idBerikutnya = 1;
 
     public void tambahSiswa(String nama, String nis, String kelas) {
-        daftarSiswa.add(new Siswa(idBerikutnya++, nama, nis, kelas));
-        System.out.println("Siswa berhasil ditambahkan!");
+        if (isNisUnik(nis)) {
+            daftarSiswa.add(new Siswa(idBerikutnya++, nama, nis, kelas));
+            System.out.println("Siswa berhasil ditambahkan!");
+        } else {
+            System.out.println("Gagal menambahkan siswa. NIS sudah digunakan oleh siswa lain.");
+        }
     }
 
     public void editSiswa(int id, String namaBaru, String nisBaru, String kelasBaru) {
         for (Siswa siswa : daftarSiswa) {
             if (siswa.getId() == id) {
+                if (!siswa.getNis().equals(nisBaru) && !isNisUnik(nisBaru)) {
+                    System.out.println("Gagal mengubah data siswa. NIS sudah digunakan oleh siswa lain.");
+                    return;
+                }
                 siswa.setNama(namaBaru);
                 siswa.setNis(nisBaru);
                 siswa.setKelas(kelasBaru);
                 System.out.println("Data siswa berhasil diubah!");
+                return;
+            }
+        }
+        System.out.println("Siswa dengan ID tersebut tidak ditemukan.");
+    }
+
+    public void hapusSiswa(int id) {
+        for (Siswa siswa : daftarSiswa) {
+            if (siswa.getId() == id) {
+                daftarSiswa.remove(siswa);
+                System.out.println("Siswa berhasil dihapus.");
                 return;
             }
         }
@@ -40,7 +59,6 @@ public class Manajemen {
     public void editNilai(int id) {
         for (Siswa siswa : daftarSiswa) {
             if (siswa.getId() == id) {
-                // Tampilkan nama siswa dan daftar nilai
                 System.out.println("\nNama Siswa: " + siswa.getNama());
                 HashMap<String, Double> nilaiMap = siswa.getNilaiMap();
                 if (nilaiMap.isEmpty()) {
@@ -52,14 +70,13 @@ public class Manajemen {
                     }
                 }
 
-                // Sekarang minta untuk edit nilai
                 System.out.print("\nMasukkan nama mata pelajaran yang ingin diedit: ");
-                Scanner scanner = new Scanner(System.in);  // Membuat objek scanner
-                String mataPelajaran = scanner.nextLine();  // Membaca input mata pelajaran
+                Scanner scanner = new Scanner(System.in);
+                String mataPelajaran = scanner.nextLine();
                 if (nilaiMap.containsKey(mataPelajaran)) {
                     System.out.print("Masukkan nilai baru: ");
-                    double nilaiBaru = scanner.nextDouble();  // Membaca input nilai baru
-                    nilaiMap.put(mataPelajaran, nilaiBaru);  // Mengupdate nilai
+                    double nilaiBaru = scanner.nextDouble();
+                    nilaiMap.put(mataPelajaran, nilaiBaru);
                     System.out.println("Nilai untuk mata pelajaran '" + mataPelajaran + "' berhasil diubah!");
                 } else {
                     System.out.println("Mata pelajaran '" + mataPelajaran + "' tidak ditemukan.");
@@ -91,7 +108,13 @@ public class Manajemen {
         }
     }
 
-    public ArrayList<Siswa> getDaftarSiswa() {
-        return daftarSiswa;
+    private boolean isNisUnik(String nis) {
+        for (Siswa siswa : daftarSiswa) {
+            if (siswa.getNis().equals(nis)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
+

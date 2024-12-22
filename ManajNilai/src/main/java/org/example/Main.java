@@ -1,6 +1,6 @@
 package org.example;
 import java.util.Scanner;
-//DESEMBER D NYA DI KEJAR KEJAR POLISI INISIAL SOFYAN
+
 public class Main {
     public static void main(String[] args) {
         Manajemen manajemen = new Manajemen();
@@ -10,11 +10,12 @@ public class Main {
             System.out.println("\n=== Aplikasi Manajemen Nilai Siswa ===");
             System.out.println("1. Tambah Siswa");
             System.out.println("2. Edit Siswa");
-            System.out.println("3. Input Nilai Siswa");
-            System.out.println("4. Edit Nilai Siswa");
-            System.out.println("5. Lihat Semua Nilai Siswa");
-            System.out.println("6. Keluar");
-            System.out.print("Pilih menu (1/2/3/4/5/6): ");
+            System.out.println("3. Hapus Siswa");
+            System.out.println("4. Input Nilai Siswa");
+            System.out.println("5. Edit Nilai Siswa");
+            System.out.println("6. Lihat Semua Nilai Siswa");
+            System.out.println("7. Keluar");
+            System.out.print("Pilih menu (1/2/3/4/5/6/7): ");
 
             int pilihan = scanner.nextInt();
             scanner.nextLine(); // Konsumsi newline
@@ -25,6 +26,10 @@ public class Main {
                     String nama = scanner.nextLine();
                     System.out.print("Masukkan NIS siswa: ");
                     String nis = scanner.nextLine();
+                    while (!nis.matches("\\d+")) {
+                        System.out.print("NIS harus berupa angka. Masukkan NIS siswa: ");
+                        nis = scanner.nextLine();
+                    }
                     System.out.print("Masukkan kelas siswa: ");
                     String kelas = scanner.nextLine();
                     manajemen.tambahSiswa(nama, nis, kelas);
@@ -38,11 +43,21 @@ public class Main {
                     String namaBaru = scanner.nextLine();
                     System.out.print("Masukkan NIS baru: ");
                     String nisBaru = scanner.nextLine();
+                    while (!nisBaru.matches("\\d+")) {
+                        System.out.print("NIS harus berupa angka. Masukkan NIS baru: ");
+                        nisBaru = scanner.nextLine();
+                    }
                     System.out.print("Masukkan kelas baru: ");
                     String kelasBaru = scanner.nextLine();
                     manajemen.editSiswa(idEdit, namaBaru, nisBaru, kelasBaru);
                     break;
                 case 3:
+                    manajemen.tampilkanSiswaTerdaftar();
+                    System.out.print("Masukkan ID siswa yang ingin dihapus: ");
+                    int idHapus = scanner.nextInt();
+                    manajemen.hapusSiswa(idHapus);
+                    break;
+                case 4:
                     manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diinput nilainya: ");
                     int idNilai = scanner.nextInt();
@@ -61,16 +76,16 @@ public class Main {
                         manajemen.inputNilai(idNilai, mataPelajaran, nilai);
                     }
                     break;
-                case 4:
+                case 5:
                     manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diedit nilainya: ");
                     int idEditNilai = scanner.nextInt();
                     manajemen.editNilai(idEditNilai);
                     break;
-                case 5:
+                case 6:
                     manajemen.tampilkanSemuaSiswa();
                     break;
-                case 6:
+                case 7:
                     System.out.println("Keluar dari aplikasi. Terima kasih!");
                     scanner.close();
                     return;
@@ -80,3 +95,4 @@ public class Main {
         }
     }
 }
+
