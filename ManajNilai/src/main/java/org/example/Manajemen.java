@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,5 +117,9 @@ public class Manajemen {
         }
         return true;
     }
-}
 
+    // Tambahkan getter ini
+    public ArrayList<Siswa> getDaftarSiswa() {
+        return daftarSiswa;
+    }
+}
