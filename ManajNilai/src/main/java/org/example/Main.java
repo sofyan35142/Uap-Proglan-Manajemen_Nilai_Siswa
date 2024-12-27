@@ -35,7 +35,7 @@ public class Main {
                     manajemen.tambahSiswa(nama, nis, kelas);
                     break;
                 case 2:
-                    manajemen.tampilkanSiswaTerdaftar();
+//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diubah: ");
                     int idEdit = scanner.nextInt();
                     scanner.nextLine();
@@ -52,13 +52,13 @@ public class Main {
                     manajemen.editSiswa(idEdit, namaBaru, nisBaru, kelasBaru);
                     break;
                 case 3:
-                    manajemen.tampilkanSiswaTerdaftar();
-                    System.out.print("Masukkan ID siswa yang ingin dihapus: ");
+//                    manajemen.tampilkanSiswaTerdaftar();
+//                    System.out.print("Masukkan ID siswa yang ingin dihapus: ");
                     int idHapus = scanner.nextInt();
                     manajemen.hapusSiswa(idHapus);
                     break;
                 case 4:
-                    manajemen.tampilkanSiswaTerdaftar();
+//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diinput nilainya: ");
                     int idNilai = scanner.nextInt();
                     scanner.nextLine();
@@ -73,17 +73,17 @@ public class Main {
                         System.out.print("Nilai: ");
                         double nilai = scanner.nextDouble();
                         scanner.nextLine();
-                        manajemen.inputNilai(idNilai, mataPelajaran, nilai);
+//                        manajemen.inputNilai(idNilai, mataPelajaran, nilai);
                     }
                     break;
                 case 5:
-                    manajemen.tampilkanSiswaTerdaftar();
+//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diedit nilainya: ");
                     int idEditNilai = scanner.nextInt();
-                    manajemen.editNilai(idEditNilai);
+//                    manajemen.editNilai(idEditNilai);
                     break;
                 case 6:
-                    manajemen.tampilkanSemuaSiswa();
+//                    manajemen.tampilkanSemuaSiswa();
                     break;
                 case 7:
                     System.out.println("Keluar dari aplikasi. Terima kasih!");

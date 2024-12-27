@@ -1,21 +1,23 @@
 package org.example;
-import java.util.HashMap;
 
 public class Siswa {
+    private static int counter = 1; // Static counter to generate unique ID for each student
+    private int id;
     private String nama;
     private String nis;
     private String kelas;
-    private int id;
-    private HashMap<String, Double> nilaiMap;
+    private double nilai1;
+    private double nilai2;
+    private double nilai3;
 
-    public Siswa(int id, String nama, String nis, String kelas) {
-        this.id = id;
+    public Siswa(String nama, String nis, String kelas) {
+        this.id = counter++;
         this.nama = nama;
         this.nis = nis;
         this.kelas = kelas;
-        this.nilaiMap = new HashMap<>();
     }
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -44,29 +46,28 @@ public class Siswa {
         this.kelas = kelas;
     }
 
-    public HashMap<String, Double> getNilaiMap() {
-        return nilaiMap;
+    // Getter for Nilai (Grades)
+    public double getNilai1() {
+        return nilai1;
     }
 
-    public void tambahNilai(String mataPelajaran, double nilai) {
-        nilaiMap.put(mataPelajaran, nilai);
+    public double getNilai2() {
+        return nilai2;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id)
-                .append(", Nama: ").append(nama)
-                .append(", NIS: ").append(nis)
-                .append(", Kelas: ").append(kelas)
-                .append("\nNilai: ");
-        if (nilaiMap.isEmpty()) {
-            sb.append("Belum ada nilai yang diinput.");
-        } else {
-            for (String mapel : nilaiMap.keySet()) {
-                sb.append("\n  - ").append(mapel).append(": ").append(nilaiMap.get(mapel));
-            }
-        }
-        return sb.toString();
+    public double getNilai3() {
+        return nilai3;
+    }
+
+    // Method to set all grades at once
+    public void setNilai(double nilai1, double nilai2, double nilai3) {
+        this.nilai1 = nilai1;
+        this.nilai2 = nilai2;
+        this.nilai3 = nilai3;
+    }
+
+    // Method to get all grades together
+    public String getNilai() {
+        return String.format("Nilai 1: %.2f, Nilai 2: %.2f, Nilai 3: %.2f", nilai1, nilai2, nilai3);
     }
 }

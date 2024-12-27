@@ -1,125 +1,57 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.List;
 
 public class Manajemen {
-    private ArrayList<Siswa> daftarSiswa = new ArrayList<>();
-    private int idBerikutnya = 1;
+    private List<Siswa> daftarSiswa;
 
+    public Manajemen() {
+        daftarSiswa = new ArrayList<>();
+    }
+
+    // Method to add a new student
     public void tambahSiswa(String nama, String nis, String kelas) {
-        if (isNisUnik(nis)) {
-            daftarSiswa.add(new Siswa(idBerikutnya++, nama, nis, kelas));
-            System.out.println("Siswa berhasil ditambahkan!");
-        } else {
-            System.out.println("Gagal menambahkan siswa. NIS sudah digunakan oleh siswa lain.");
-        }
+        Siswa siswa = new Siswa(nama, nis, kelas);
+        daftarSiswa.add(siswa);
     }
 
-    public void editSiswa(int id, String namaBaru, String nisBaru, String kelasBaru) {
+    // Method to edit an existing student
+    public void editSiswa(int id, String nama, String nis, String kelas) {
         for (Siswa siswa : daftarSiswa) {
             if (siswa.getId() == id) {
-                if (!siswa.getNis().equals(nisBaru) && !isNisUnik(nisBaru)) {
-                    System.out.println("Gagal mengubah data siswa. NIS sudah digunakan oleh siswa lain.");
-                    return;
-                }
-                siswa.setNama(namaBaru);
-                siswa.setNis(nisBaru);
-                siswa.setKelas(kelasBaru);
-                System.out.println("Data siswa berhasil diubah!");
-                return;
+                siswa.setNama(nama);
+                siswa.setNis(nis);
+                siswa.setKelas(kelas);
             }
         }
-        System.out.println("Siswa dengan ID tersebut tidak ditemukan.");
     }
 
+    // Method to delete a student
     public void hapusSiswa(int id) {
+        daftarSiswa.removeIf(siswa -> siswa.getId() == id);
+    }
+
+    // Method to input grades (3 subjects)
+    public void inputNilai(int id, double nilai1, double nilai2, double nilai3) {
         for (Siswa siswa : daftarSiswa) {
             if (siswa.getId() == id) {
-                daftarSiswa.remove(siswa);
-                System.out.println("Siswa berhasil dihapus.");
-                return;
+                siswa.setNilai(nilai1, nilai2, nilai3); // Assuming you have a method to set multiple grades
             }
         }
-        System.out.println("Siswa dengan ID tersebut tidak ditemukan.");
     }
 
-    public void inputNilai(int id, String mataPelajaran, double nilai) {
+    // Method to edit grades (3 subjects)
+    public void editNilai(int id, double nilai1, double nilai2, double nilai3) {
         for (Siswa siswa : daftarSiswa) {
             if (siswa.getId() == id) {
-                siswa.tambahNilai(mataPelajaran, nilai);
-                System.out.println("Nilai untuk mata pelajaran '" + mataPelajaran + "' berhasil diinput!");
-                return;
-            }
-        }
-        System.out.println("Siswa dengan ID tersebut tidak ditemukan.");
-    }
-
-    public void editNilai(int id) {
-        for (Siswa siswa : daftarSiswa) {
-            if (siswa.getId() == id) {
-                System.out.println("\nNama Siswa: " + siswa.getNama());
-                HashMap<String, Double> nilaiMap = siswa.getNilaiMap();
-                if (nilaiMap.isEmpty()) {
-                    System.out.println("Belum ada nilai yang diinput.");
-                } else {
-                    System.out.println("Daftar Nilai Siswa:");
-                    for (Map.Entry<String, Double> entry : nilaiMap.entrySet()) {
-                        System.out.println("  - " + entry.getKey() + ": " + entry.getValue());
-                    }
-                }
-
-                System.out.print("\nMasukkan nama mata pelajaran yang ingin diedit: ");
-                Scanner scanner = new Scanner(System.in);
-                String mataPelajaran = scanner.nextLine();
-                if (nilaiMap.containsKey(mataPelajaran)) {
-                    System.out.print("Masukkan nilai baru: ");
-                    double nilaiBaru = scanner.nextDouble();
-                    nilaiMap.put(mataPelajaran, nilaiBaru);
-                    System.out.println("Nilai untuk mata pelajaran '" + mataPelajaran + "' berhasil diubah!");
-                } else {
-                    System.out.println("Mata pelajaran '" + mataPelajaran + "' tidak ditemukan.");
-                }
-                return;
-            }
-        }
-        System.out.println("Siswa dengan ID tersebut tidak ditemukan.");
-    }
-
-    public void tampilkanSemuaSiswa() {
-        if (daftarSiswa.isEmpty()) {
-            System.out.println("Belum ada siswa yang terdaftar.");
-            return;
-        }
-        for (Siswa siswa : daftarSiswa) {
-            System.out.println(siswa);
-        }
-    }
-
-    public void tampilkanSiswaTerdaftar() {
-        if (daftarSiswa.isEmpty()) {
-            System.out.println("Belum ada siswa yang terdaftar.");
-        } else {
-            System.out.println("\n=== Daftar Siswa Terdaftar ===");
-            for (Siswa siswa : daftarSiswa) {
-                System.out.println("ID: " + siswa.getId() + ", Nama: " + siswa.getNama() + ", NIS: " + siswa.getNis() + ", Kelas: " + siswa.getKelas());
+                siswa.setNilai(nilai1, nilai2, nilai3); // Same assumption as inputNilai
             }
         }
     }
 
-    private boolean isNisUnik(String nis) {
-        for (Siswa siswa : daftarSiswa) {
-            if (siswa.getNis().equals(nis)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Tambahkan getter ini
-    public ArrayList<Siswa> getDaftarSiswa() {
+    // Getter for daftarSiswa
+    public List<Siswa> getDaftarSiswa() {
         return daftarSiswa;
     }
 }
