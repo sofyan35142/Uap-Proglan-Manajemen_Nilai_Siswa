@@ -6,6 +6,7 @@ public class Siswa {
     private String nama;
     private String nis;
     private String kelas;
+    private double mataPelajaran;
     private double nilai1;
     private double nilai2;
     private double nilai3;
@@ -44,6 +45,10 @@ public class Siswa {
 
     public void setKelas(String kelas) {
         this.kelas = kelas;
+    }
+
+    public double getMataPelajaran() {
+        return mataPelajaran;
     }
 
     // Getter for Nilai (Grades)

@@ -3,6 +3,7 @@ package org.example.Gui;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
+import java.util.ArrayList;
 import org.example.Manajemen;
 import org.example.Siswa;
 
@@ -154,6 +155,7 @@ public class ManajemenGui extends JFrame {
     }
 
     // Create Form for "Tambah Siswa"
+
     private JPanel createTambahSiswaForm() {
         JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         formPanel.setBackground(Color.WHITE);
@@ -269,87 +271,52 @@ public class ManajemenGui extends JFrame {
 
     // Create Form for "Input Nilai"
     private JPanel createInputNilaiForm() {
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS)); // Set vertical layout
+        JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         formPanel.setBackground(Color.WHITE);
 
-        // Create a JComboBox for selecting the student
         JLabel labelSelect = new JLabel("Pilih Siswa:");
         JComboBox<String> siswaComboBox = new JComboBox<>();
-
-        // Add students to the combo box
         for (Siswa siswa : manajemen.getDaftarSiswa()) {
             siswaComboBox.addItem("ID: " + siswa.getId() + ", " + siswa.getNama());
         }
 
-        // Add components for Mata Pelajaran and Nilai
-        formPanel.add(labelSelect);
-        formPanel.add(siswaComboBox);
+        JLabel labelNilai1 = new JLabel("Nilai Mata Pelajaran 1:");
+        JTextField inputNilai1 = new JTextField();
 
-        // Create and add Mata Pelajaran and Nilai pairs
-        formPanel.add(createMataPelajaranAndNilai("Mata Pelajaran 1:", "Nilai 1:"));
-        formPanel.add(createMataPelajaranAndNilai("Mata Pelajaran 2:", "Nilai 2:"));
-        formPanel.add(createMataPelajaranAndNilai("Mata Pelajaran 3:", "Nilai 3:"));
+        JLabel labelNilai2 = new JLabel("Nilai Mata Pelajaran 2:");
+        JTextField inputNilai2 = new JTextField();
 
-        // Create Submit button to save the grades
+        JLabel labelNilai3 = new JLabel("Nilai Mata Pelajaran 3:");
+        JTextField inputNilai3 = new JTextField();
+
         JButton submitButton = new JButton("Input Nilai");
         submitButton.addActionListener(e -> {
             int selectedIndex = siswaComboBox.getSelectedIndex();
             if (selectedIndex >= 0) {
                 Siswa siswa = manajemen.getDaftarSiswa().get(selectedIndex);
-                double nilai1 = Double.parseDouble(((JTextField) ((JPanel) formPanel.getComponent(2)).getComponent(1)).getText());
-                double nilai2 = Double.parseDouble(((JTextField) ((JPanel) formPanel.getComponent(3)).getComponent(1)).getText());
-                double nilai3 = Double.parseDouble(((JTextField) ((JPanel) formPanel.getComponent(4)).getComponent(1)).getText());
-
-                // Save nilai for 3 subjects
-                manajemen.inputNilai(siswa.getId(), nilai1, nilai2, nilai3);
-                JOptionPane.showMessageDialog(this, "Nilai berhasil dimasukkan!");
-                // Clear the input fields
-                ((JTextField) ((JPanel) formPanel.getComponent(2)).getComponent(1)).setText("");
-                ((JTextField) ((JPanel) formPanel.getComponent(3)).getComponent(1)).setText("");
-                ((JTextField) ((JPanel) formPanel.getComponent(4)).getComponent(1)).setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "Silakan pilih siswa terlebih dahulu.");
+                try {
+                    double nilai1 = Double.parseDouble(inputNilai1.getText());
+                    double nilai2 = Double.parseDouble(inputNilai2.getText());
+                    double nilai3 = Double.parseDouble(inputNilai3.getText());
+                    manajemen.inputNilai(siswa.getId(), nilai1, nilai2, nilai3);
+                    JOptionPane.showMessageDialog(this, "Nilai berhasil dimasukkan!");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Input nilai harus berupa angka!");
+                }
             }
         });
 
-        // Add the submit button
+        formPanel.add(labelSelect);
+        formPanel.add(siswaComboBox);
+        formPanel.add(labelNilai1);
+        formPanel.add(inputNilai1);
+        formPanel.add(labelNilai2);
+        formPanel.add(inputNilai2);
+        formPanel.add(labelNilai3);
+        formPanel.add(inputNilai3);
         formPanel.add(submitButton);
 
         return formPanel;
-    }
-
-    // Helper method to create Mata Pelajaran and Nilai pair
-    private JPanel createMataPelajaranAndNilai(String mataPelajaranLabel, String nilaiLabel) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Set vertical layout for each pair
-
-        JLabel labelMataPelajaran = new JLabel(mataPelajaranLabel);
-        JTextField inputNilai = new JTextField(10); // TextField for inputting grade
-
-        JLabel labelNilai = new JLabel(nilaiLabel);
-
-        // Add the Mata Pelajaran label and Nilai input field to the panel
-        panel.add(labelMataPelajaran);
-        panel.add(inputNilai);
-        panel.add(labelNilai);
-
-        return panel;
-    }
-
-    // Helper method to create a panel for each Mata Pelajaran with a label and input field
-    private JPanel createMataPelajaranPanel(String mataPelajaranLabel, String nilaiLabel) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-
-        JLabel labelMataPelajaran = new JLabel(mataPelajaranLabel);
-        JTextField inputNilai = new JTextField(10);
-
-        panel.add(labelMataPelajaran);
-        panel.add(Box.createHorizontalStrut(10)); // Space between label and text field
-        panel.add(inputNilai);
-
-        return panel;
     }
 
     // Create Form for "Edit Nilai"
@@ -408,15 +375,24 @@ public class ManajemenGui extends JFrame {
         formPanel.setBackground(Color.WHITE);
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
 
-        for (Siswa siswa : manajemen.getDaftarSiswa()) {
-            JTextArea textArea = new JTextArea("ID: " + siswa.getId() + " | Nama: " + siswa.getNama() +
-                    " | Nilai: " + siswa.getNilai());
-            textArea.setEditable(false);
-            formPanel.add(textArea);
+        if (manajemen.getDaftarSiswa().isEmpty()) {
+            formPanel.add(new JLabel("Tidak ada data siswa.", JLabel.CENTER));
+        } else {
+            for (Siswa siswa : manajemen.getDaftarSiswa()) {
+                String data = String.format("ID: %d | Nama: %s | Kelas: %s | %s",
+                        siswa.getId(), siswa.getNama(), siswa.getKelas(), siswa.getNilai());
+                JTextArea textArea = new JTextArea(data);
+                textArea.setEditable(false);
+                textArea.setBackground(new Color(245, 245, 245));
+                textArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                formPanel.add(textArea);
+                formPanel.add(Box.createVerticalStrut(10));
+            }
         }
 
         return formPanel;
     }
+
 
     public static void main(String[] args) {
         new ManajemenGui();
