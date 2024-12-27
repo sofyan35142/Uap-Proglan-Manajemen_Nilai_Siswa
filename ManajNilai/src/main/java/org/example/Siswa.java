@@ -1,8 +1,12 @@
 package org.example;
+
 import javax.swing.ImageIcon;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Kelas untuk menyimpan informasi tentang siswa, termasuk ID, nama, NIS, kelas, foto, dan nilai.
+ */
 public class Siswa {
     private static int idCounter = 1;
     private String id;
@@ -14,6 +18,14 @@ public class Siswa {
     private double nilai2;
     private double nilai3;
 
+    /**
+     * Konstruktor untuk membuat objek Siswa dengan informasi nama, NIS, kelas, dan foto.
+     *
+     * @param nama  Nama siswa.
+     * @param nis   Nomor Induk Siswa.
+     * @param kelas Kelas siswa.
+     * @param foto  Foto siswa (bisa berupa path atau URL).
+     */
     public Siswa(String nama, String nis, String kelas, String foto) {
         this.id = String.valueOf(idCounter++);
         this.nama = nama;
@@ -22,7 +34,8 @@ public class Siswa {
         this.foto = foto;
     }
 
-    // Getters and Setters
+    // Getter dan setter untuk atribut siswa
+
     public String getId() {
         return id;
     }

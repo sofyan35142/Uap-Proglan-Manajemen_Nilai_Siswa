@@ -51,7 +51,7 @@
 
             // Footer
             JPanel footer = createGradientPanel(new Color(41, 128, 185), new Color(52, 152, 219), 40);
-            JLabel footerLabel = new JLabel("\u00A9 Sofyan", JLabel.CENTER);
+            JLabel footerLabel = new JLabel("\u00A9 Sofyan Motion dan Ravlindo Ms", JLabel.CENTER);
             footerLabel.setFont(new Font("Arial", Font.ITALIC, 14));
             footerLabel.setForeground(Color.WHITE);
             footer.add(footerLabel);

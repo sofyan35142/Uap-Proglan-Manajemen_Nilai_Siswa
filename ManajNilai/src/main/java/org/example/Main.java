@@ -1,7 +1,19 @@
 package org.example;
+
 import java.util.Scanner;
 
+/**
+ * Aplikasi utama untuk mengelola data siswa dan nilai mereka.
+ * Menyediakan menu untuk menambah, mengedit, menghapus siswa, dan mengelola nilai mereka.
+ */
 public class Main {
+
+    /**
+     * Metode utama untuk menjalankan aplikasi manajemen nilai siswa.
+     * Menyediakan menu interaktif untuk pengguna dan memproses input pengguna.
+     *
+     * @param args Argumen yang diberikan ke aplikasi (tidak digunakan dalam aplikasi ini).
+     */
     public static void main(String[] args) {
         Manajemen manajemen = new Manajemen();
         Scanner scanner = new Scanner(System.in);
@@ -32,10 +44,8 @@ public class Main {
                     }
                     System.out.print("Masukkan kelas siswa: ");
                     String kelas = scanner.nextLine();
-//                    manajemen.tambahSiswa(nama, nis, kelas);
                     break;
                 case 2:
-//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diubah: ");
                     int idEdit = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
@@ -49,16 +59,12 @@ public class Main {
                     }
                     System.out.print("Masukkan kelas baru: ");
                     String kelasBaru = scanner.nextLine();
-//                    manajemen.editSiswa(idEdit, namaBaru, nisBaru, kelasBaru);
                     break;
                 case 3:
-//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin dihapus: ");
                     int idHapus = scanner.nextInt();
-//                    manajemen.hapusSiswa(idHapus);
                     break;
                 case 4:
-//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diinput nilainya: ");
                     int idNilai = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
@@ -68,10 +74,8 @@ public class Main {
                     double nilai2 = scanner.nextDouble();
                     System.out.print("Masukkan nilai mata pelajaran 3: ");
                     double nilai3 = scanner.nextDouble();
-//                    manajemen.inputNilai(idNilai, nilai1, nilai2, nilai3);
                     break;
                 case 5:
-//                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diedit nilainya: ");
                     int idEditNilai = scanner.nextInt();
                     System.out.print("Masukkan nilai baru mata pelajaran 1: ");
@@ -80,10 +84,8 @@ public class Main {
                     double nilai2Edit = scanner.nextDouble();
                     System.out.print("Masukkan nilai baru mata pelajaran 3: ");
                     double nilai3Edit = scanner.nextDouble();
-//                    manajemen.editNilai(idEditNilai, nilai1Edit, nilai2Edit, nilai3Edit);
                     break;
                 case 6:
-//                    manajemen.tampilkanSiswaTerdaftar();
                     break;
                 case 7:
                     System.out.println("Keluar dari aplikasi. Terima kasih!");
