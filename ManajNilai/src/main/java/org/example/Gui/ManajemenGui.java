@@ -174,6 +174,12 @@ public class ManajemenGui extends JFrame {
             String nama = inputNama.getText();
             String nis = inputNis.getText();
             String kelas = inputKelas.getText();
+
+            if (!nis.matches("\\d{8,}")) {
+                JOptionPane.showMessageDialog(this, "NIS harus berupa angka dan minimal 8 karakter!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             manajemen.tambahSiswa(nama, nis, kelas);
             JOptionPane.showMessageDialog(this, "Siswa berhasil ditambahkan!");
             inputNama.setText("");
@@ -220,6 +226,12 @@ public class ManajemenGui extends JFrame {
                 String nama = inputNama.getText();
                 String nis = inputNis.getText();
                 String kelas = inputKelas.getText();
+
+                if (!nis.matches("\\d{8,}")) {
+                    JOptionPane.showMessageDialog(this, "NIS harus berupa angka dan minimal 8 karakter!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 manajemen.editSiswa(siswa.getId(), nama, nis, kelas);
                 JOptionPane.showMessageDialog(this, "Siswa berhasil diubah!");
                 inputNama.setText("");
@@ -271,7 +283,7 @@ public class ManajemenGui extends JFrame {
 
     // Create Form for "Input Nilai"
     private JPanel createInputNilaiForm() {
-        JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.setBackground(Color.WHITE);
 
         JLabel labelSelect = new JLabel("Pilih Siswa:");
@@ -280,13 +292,13 @@ public class ManajemenGui extends JFrame {
             siswaComboBox.addItem("ID: " + siswa.getId() + ", " + siswa.getNama());
         }
 
-        JLabel labelNilai1 = new JLabel("Nilai Mata Pelajaran 1:");
+        JLabel labelNilai1 = new JLabel("Nilai Mata Pelajaran 1 (0-100):");
         JTextField inputNilai1 = new JTextField();
 
-        JLabel labelNilai2 = new JLabel("Nilai Mata Pelajaran 2:");
+        JLabel labelNilai2 = new JLabel("Nilai Mata Pelajaran 2 (0-100):");
         JTextField inputNilai2 = new JTextField();
 
-        JLabel labelNilai3 = new JLabel("Nilai Mata Pelajaran 3:");
+        JLabel labelNilai3 = new JLabel("Nilai Mata Pelajaran 3 (0-100):");
         JTextField inputNilai3 = new JTextField();
 
         JButton submitButton = new JButton("Input Nilai");
@@ -298,14 +310,27 @@ public class ManajemenGui extends JFrame {
                     double nilai1 = Double.parseDouble(inputNilai1.getText());
                     double nilai2 = Double.parseDouble(inputNilai2.getText());
                     double nilai3 = Double.parseDouble(inputNilai3.getText());
+
+                    if (nilai1 < 0 || nilai1 > 100 || nilai2 < 0 || nilai2 > 100 || nilai3 < 0 || nilai3 > 100) {
+                        JOptionPane.showMessageDialog(this, "Nilai harus berada dalam rentang 0-100!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
                     manajemen.inputNilai(siswa.getId(), nilai1, nilai2, nilai3);
                     JOptionPane.showMessageDialog(this, "Nilai berhasil dimasukkan!");
+
+                    // Clear input fields after successful submission
+                    inputNilai1.setText("");
+                    inputNilai2.setText("");
+                    inputNilai3.setText("");
+
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Input nilai harus berupa angka!");
+                    JOptionPane.showMessageDialog(this, "Input nilai harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
+        // Add components to formPanel
         formPanel.add(labelSelect);
         formPanel.add(siswaComboBox);
         formPanel.add(labelNilai1);
@@ -378,21 +403,33 @@ public class ManajemenGui extends JFrame {
         if (manajemen.getDaftarSiswa().isEmpty()) {
             formPanel.add(new JLabel("Tidak ada data siswa.", JLabel.CENTER));
         } else {
+            // Column names for the table including NIS
+            String[] columnNames = {"ID", "NIS", "Nama", "Kelas", "Nilai 1", "Nilai 2", "Nilai 3"};
+
+            // Data for the table including NIS
+            ArrayList<Object[]> combinedData = new ArrayList<>();
             for (Siswa siswa : manajemen.getDaftarSiswa()) {
-                String data = String.format("ID: %d | Nama: %s | Kelas: %s | %s",
-                        siswa.getId(), siswa.getNama(), siswa.getKelas(), siswa.getNilai());
-                JTextArea textArea = new JTextArea(data);
-                textArea.setEditable(false);
-                textArea.setBackground(new Color(245, 245, 245));
-                textArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                formPanel.add(textArea);
-                formPanel.add(Box.createVerticalStrut(10));
+                combinedData.add(new Object[]{
+                        siswa.getId(),
+                        siswa.getNis(),        // NIS column
+                        siswa.getNama(),
+                        siswa.getKelas(),
+                        siswa.getNilai1(),     // Nilai mata pelajaran 1
+                        siswa.getNilai2(),     // Nilai mata pelajaran 2
+                        siswa.getNilai3()      // Nilai mata pelajaran 3
+                });
             }
+
+            // Create the table with the combined data
+            JTable siswaTable = new JTable(combinedData.toArray(new Object[0][0]), columnNames);
+            JScrollPane scrollPane = new JScrollPane(siswaTable);
+            siswaTable.setFillsViewportHeight(true); // Make the table scrollable
+
+            formPanel.add(scrollPane); // Add the table inside a scroll pane
         }
 
         return formPanel;
     }
-
 
     public static void main(String[] args) {
         new ManajemenGui();
