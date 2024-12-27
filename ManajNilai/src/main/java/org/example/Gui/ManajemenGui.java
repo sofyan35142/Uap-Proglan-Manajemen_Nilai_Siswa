@@ -6,7 +6,8 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import org.example.Manajemen;
 import org.example.Siswa;
-
+import java.io.File;  // Import File
+import javax.swing.filechooser.FileNameExtensionFilter;
 public class ManajemenGui extends JFrame {
     private JPanel sidebar;
     private JPanel mainContent;
@@ -157,7 +158,7 @@ public class ManajemenGui extends JFrame {
     // Create Form for "Tambah Siswa"
 
     private JPanel createTambahSiswaForm() {
-        JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         formPanel.setBackground(Color.WHITE);
 
         JLabel labelNama = new JLabel("Nama Siswa:");
@@ -168,6 +169,23 @@ public class ManajemenGui extends JFrame {
 
         JLabel labelKelas = new JLabel("Kelas Siswa:");
         JTextField inputKelas = new JTextField();
+
+        JLabel labelFoto = new JLabel("Upload Foto:");
+        JButton uploadFotoButton = new JButton("Pilih Foto...");
+        uploadFotoButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Pilih Foto Siswa");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg"));
+
+            int returnValue = fileChooser.showOpenDialog(this);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                String fotoPath = selectedFile.getAbsolutePath(); // Get absolute path
+                JOptionPane.showMessageDialog(this, "Foto berhasil dipilih: " + selectedFile.getName());
+                // You can now handle `fotoPath` as needed (e.g., storing the path in the `manajemen` object)
+            }
+        });
 
         JButton submitButton = new JButton("Tambah Siswa");
         submitButton.addActionListener(e -> {
@@ -180,7 +198,11 @@ public class ManajemenGui extends JFrame {
                 return;
             }
 
-            manajemen.tambahSiswa(nama, nis, kelas);
+            // Handle the uploaded photo path
+            // Example: Assuming you store the file path or image in the `Manajemen` class.
+            // String fotoPath = selectedFile.getAbsolutePath();
+
+            manajemen.tambahSiswa(nama, nis, kelas); // Add photo handling logic here
             JOptionPane.showMessageDialog(this, "Siswa berhasil ditambahkan!");
             inputNama.setText("");
             inputNis.setText("");
@@ -193,6 +215,8 @@ public class ManajemenGui extends JFrame {
         formPanel.add(inputNis);
         formPanel.add(labelKelas);
         formPanel.add(inputKelas);
+        formPanel.add(labelFoto);
+        formPanel.add(uploadFotoButton);
         formPanel.add(submitButton);
 
         return formPanel;
@@ -395,6 +419,7 @@ public class ManajemenGui extends JFrame {
     }
 
     // Create Form for "Lihat Nilai"
+
     private JPanel createLihatNilaiForm() {
         JPanel formPanel = new JPanel();
         formPanel.setBackground(Color.WHITE);
@@ -403,17 +428,40 @@ public class ManajemenGui extends JFrame {
         if (manajemen.getDaftarSiswa().isEmpty()) {
             formPanel.add(new JLabel("Tidak ada data siswa.", JLabel.CENTER));
         } else {
-            // Column names for the table including NIS
-            String[] columnNames = {"ID", "NIS", "Nama", "Kelas", "Nilai 1", "Nilai 2", "Nilai 3"};
+            // Column names for the table
+            String[] columnNames = {"ID", "NIS", "Nama", "Kelas", "Foto", "Nilai 1", "Nilai 2", "Nilai 3"};
 
-            // Data for the table including NIS
+            // Data for the table
             ArrayList<Object[]> combinedData = new ArrayList<>();
             for (Siswa siswa : manajemen.getDaftarSiswa()) {
-                combinedData.add(new Object[]{
+                String fotoPath = siswa.getFoto();  // Assuming Siswa has a method getFoto()
+                ImageIcon imageIcon = null;
+
+                if (fotoPath != null && !fotoPath.isEmpty()) {
+                    try {
+                        File fotoFile = new File(fotoPath); // Create a File object to check if it exists
+                        if (fotoFile.exists()) {
+                            // Try to create an ImageIcon from the file path and scale it to fit row height
+                            Image image = new ImageIcon(fotoPath).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+                            imageIcon = new ImageIcon(image);
+                        } else {
+                            System.out.println("File not found at path: " + fotoPath);
+                            imageIcon = new ImageIcon(); // Empty image if the file is not found
+                        }
+                    } catch (Exception e) {
+                        // Handle error if the image cannot be loaded
+                        System.out.println("Error loading image from path: " + fotoPath);
+                        imageIcon = new ImageIcon(); // Set empty image if error occurs
+                    }
+                }
+
+                // Add the student's data to combinedData
+                combinedData.add(new Object[] {
                         siswa.getId(),
                         siswa.getNis(),        // NIS column
                         siswa.getNama(),
                         siswa.getKelas(),
+                        imageIcon != null ? imageIcon : new ImageIcon(), // Ensure imageIcon is not null
                         siswa.getNilai1(),     // Nilai mata pelajaran 1
                         siswa.getNilai2(),     // Nilai mata pelajaran 2
                         siswa.getNilai3()      // Nilai mata pelajaran 3
@@ -421,9 +469,22 @@ public class ManajemenGui extends JFrame {
             }
 
             // Create the table with the combined data
-            JTable siswaTable = new JTable(combinedData.toArray(new Object[0][0]), columnNames);
+            JTable siswaTable = new JTable(combinedData.toArray(new Object[0][0]), columnNames) {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    if (column == 4) { // Foto column
+                        return ImageIcon.class;
+                    }
+                    return Object.class;
+                }
+            };
+
+            // Set row height to display the image properly
+            siswaTable.setRowHeight(60);  // Increase this value to fit your images properly
+
+            // Make the table scrollable
             JScrollPane scrollPane = new JScrollPane(siswaTable);
-            siswaTable.setFillsViewportHeight(true); // Make the table scrollable
+            siswaTable.setFillsViewportHeight(true);
 
             formPanel.add(scrollPane); // Add the table inside a scroll pane
         }
@@ -435,3 +496,4 @@ public class ManajemenGui extends JFrame {
         new ManajemenGui();
     }
 }
+

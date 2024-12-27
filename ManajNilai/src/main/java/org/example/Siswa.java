@@ -1,12 +1,15 @@
 package org.example;
 
+import javax.swing.ImageIcon;
+import java.util.ArrayList;
+
 public class Siswa {
     private static int counter = 1; // Static counter to generate unique ID for each student
     private int id;
     private String nama;
     private String nis;
     private String kelas;
-    private double mataPelajaran;
+    private String fotoPath; // Tambahkan atribut fotoPath
     private double nilai1;
     private double nilai2;
     private double nilai3;
@@ -18,7 +21,15 @@ public class Siswa {
         this.kelas = kelas;
     }
 
-    // Getters and Setters
+    public Siswa(String nama, String nis, String kelas, String fotoPath) {
+        this.id = counter++;
+        this.nama = nama;
+        this.nis = nis;
+        this.kelas = kelas;
+        this.fotoPath = fotoPath; // Inisialisasi fotoPath
+    }
+
+    // Getter and Setter
     public int getId() {
         return id;
     }
@@ -47,11 +58,21 @@ public class Siswa {
         this.kelas = kelas;
     }
 
-    public double getMataPelajaran() {
-        return mataPelajaran;
+    public String getFoto() {
+        return fotoPath;
     }
 
-    // Getter for Nilai (Grades)
+    public void setFoto(String fotoPath) {
+        this.fotoPath = fotoPath;
+    }
+
+    public ImageIcon getImageIcon() {
+        if (fotoPath == null || fotoPath.isEmpty()) {
+            return null; // Return null if fotoPath is not available
+        }
+        return new ImageIcon(fotoPath); // Return ImageIcon from the fotoPath
+    }
+
     public double getNilai1() {
         return nilai1;
     }
@@ -71,7 +92,6 @@ public class Siswa {
         this.nilai3 = nilai3;
     }
 
-    // Method to get all grades together
     public String getNilai() {
         return String.format("Nilai 1: %.2f, Nilai 2: %.2f, Nilai 3: %.2f", nilai1, nilai2, nilai3);
     }
