@@ -48,6 +48,11 @@
             mainContent = new JPanel(new BorderLayout());
             mainContent.setBackground(new Color(245, 245, 245));
             mainContent.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            JLabel welcomeLabel = new JLabel("<html><center>Selamat Datang<br><br>Diaplikasi Manajemen Nilai Siswa <br><br> Kasih Nilai Tinggi Mbak RAHMA <br><br> Fitur Lengkap Semua</html>", JLabel.CENTER);
+
+
+            welcomeLabel.setFont(new Font("Serif", Font.BOLD, 24));
+            mainContent.add(welcomeLabel, BorderLayout.CENTER);
 
             // Footer
             JPanel footer = createGradientPanel(new Color(41, 128, 185), new Color(52, 152, 219), 40);
@@ -125,30 +130,39 @@
         }
 
         // Show corresponding form based on menu selection
+// Show corresponding form based on menu selection
         private void showForm(String menuItem) {
-            mainContent.removeAll();
+            mainContent.removeAll();  // Remove previous content
 
-            switch (menuItem) {
-                case "Tambah Siswa":
-                    mainContent.add(createTambahSiswaForm(), BorderLayout.CENTER);
-                    break;
-                case "Edit Siswa":
-                    mainContent.add(createEditSiswaForm(), BorderLayout.CENTER);
-                    break;
-                case "Hapus Siswa":
-                    mainContent.add(createHapusSiswaForm(), BorderLayout.CENTER);
-                    break;
-                case "Input Nilai":
-                    mainContent.add(createInputNilaiForm(), BorderLayout.CENTER);
-                    break;
-                case "Edit Nilai":
-                    mainContent.add(createEditNilaiForm(), BorderLayout.CENTER);
-                    break;
-                case "Lihat Nilai":
-                    mainContent.add(createLihatNilaiForm(), BorderLayout.CENTER);
-                    break;
-                default:
-                    mainContent.add(new JLabel("Form: " + menuItem, JLabel.CENTER), BorderLayout.CENTER);
+            if (menuItem == null) {
+                // Display default "Selamat Datang" message
+                JLabel welcomeLabel = new JLabel("Selamat Datang", JLabel.CENTER);
+                welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+                mainContent.add(welcomeLabel, BorderLayout.CENTER);
+            } else {
+                // Show specific form based on the menu item
+                switch (menuItem) {
+                    case "Tambah Siswa":
+                        mainContent.add(createTambahSiswaForm(), BorderLayout.CENTER);
+                        break;
+                    case "Edit Siswa":
+                        mainContent.add(createEditSiswaForm(), BorderLayout.CENTER);
+                        break;
+                    case "Hapus Siswa":
+                        mainContent.add(createHapusSiswaForm(), BorderLayout.CENTER);
+                        break;
+                    case "Input Nilai":
+                        mainContent.add(createInputNilaiForm(), BorderLayout.CENTER);
+                        break;
+                    case "Edit Nilai":
+                        mainContent.add(createEditNilaiForm(), BorderLayout.CENTER);
+                        break;
+                    case "Lihat Nilai":
+                        mainContent.add(createLihatNilaiForm(), BorderLayout.CENTER);
+                        break;
+                    default:
+                        mainContent.add(new JLabel("Form: " + menuItem, JLabel.CENTER), BorderLayout.CENTER);
+                }
             }
 
             mainContent.revalidate();
