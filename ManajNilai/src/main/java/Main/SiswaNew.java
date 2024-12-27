@@ -1,25 +1,23 @@
-package org.example;
+package Main;
 import javax.swing.ImageIcon;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Siswa {
+public class SiswaNew {
     private static int idCounter = 1;
     private String id;
     private String nama;
     private String nis;
     private String kelas;
-    private String foto;
     private double nilai1;
     private double nilai2;
     private double nilai3;
 
-    public Siswa(String nama, String nis, String kelas, String foto) {
+    public SiswaNew(String nama, String nis, String kelas) {
         this.id = String.valueOf(idCounter++);
         this.nama = nama;
         this.nis = nis;
         this.kelas = kelas;
-        this.foto = foto;
     }
 
     // Getters and Setters
@@ -49,14 +47,6 @@ public class Siswa {
 
     public void setKelas(String kelas) {
         this.kelas = kelas;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
     }
 
     public double getNilai1() {

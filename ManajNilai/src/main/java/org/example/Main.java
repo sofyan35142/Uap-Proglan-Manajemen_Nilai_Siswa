@@ -18,7 +18,7 @@ public class Main {
             System.out.print("Pilih menu (1/2/3/4/5/6/7): ");
 
             int pilihan = scanner.nextInt();
-            scanner.nextLine(); // Konsumsi newline
+            scanner.nextLine(); // Consume newline
 
             switch (pilihan) {
                 case 1:
@@ -32,13 +32,13 @@ public class Main {
                     }
                     System.out.print("Masukkan kelas siswa: ");
                     String kelas = scanner.nextLine();
-                    manajemen.tambahSiswa(nama, nis, kelas);
+//                    manajemen.tambahSiswa(nama, nis, kelas);
                     break;
                 case 2:
 //                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diubah: ");
                     int idEdit = scanner.nextInt();
-                    scanner.nextLine();
+                    scanner.nextLine(); // Consume newline
                     System.out.print("Masukkan nama baru: ");
                     String namaBaru = scanner.nextLine();
                     System.out.print("Masukkan NIS baru: ");
@@ -49,41 +49,41 @@ public class Main {
                     }
                     System.out.print("Masukkan kelas baru: ");
                     String kelasBaru = scanner.nextLine();
-                    manajemen.editSiswa(idEdit, namaBaru, nisBaru, kelasBaru);
+//                    manajemen.editSiswa(idEdit, namaBaru, nisBaru, kelasBaru);
                     break;
                 case 3:
 //                    manajemen.tampilkanSiswaTerdaftar();
-//                    System.out.print("Masukkan ID siswa yang ingin dihapus: ");
+                    System.out.print("Masukkan ID siswa yang ingin dihapus: ");
                     int idHapus = scanner.nextInt();
-                    manajemen.hapusSiswa(idHapus);
+//                    manajemen.hapusSiswa(idHapus);
                     break;
                 case 4:
 //                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diinput nilainya: ");
                     int idNilai = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Masukkan mata pelajaran dan nilai (ketik 'selesai' untuk mengakhiri):");
-                    while (true) {
-                        System.out.print("Mata pelajaran: ");
-                        String mataPelajaran = scanner.nextLine();
-                        if (mataPelajaran.equalsIgnoreCase("selesai")) {
-                            break;
-                        }
-                        System.out.print("Nilai: ");
-                        double nilai = scanner.nextDouble();
-                        scanner.nextLine();
-//                        manajemen.inputNilai(idNilai, mataPelajaran, nilai);
-                    }
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Masukkan nilai mata pelajaran 1: ");
+                    double nilai1 = scanner.nextDouble();
+                    System.out.print("Masukkan nilai mata pelajaran 2: ");
+                    double nilai2 = scanner.nextDouble();
+                    System.out.print("Masukkan nilai mata pelajaran 3: ");
+                    double nilai3 = scanner.nextDouble();
+//                    manajemen.inputNilai(idNilai, nilai1, nilai2, nilai3);
                     break;
                 case 5:
 //                    manajemen.tampilkanSiswaTerdaftar();
                     System.out.print("Masukkan ID siswa yang ingin diedit nilainya: ");
                     int idEditNilai = scanner.nextInt();
-//                    manajemen.editNilai(idEditNilai);
+                    System.out.print("Masukkan nilai baru mata pelajaran 1: ");
+                    double nilai1Edit = scanner.nextDouble();
+                    System.out.print("Masukkan nilai baru mata pelajaran 2: ");
+                    double nilai2Edit = scanner.nextDouble();
+                    System.out.print("Masukkan nilai baru mata pelajaran 3: ");
+                    double nilai3Edit = scanner.nextDouble();
+//                    manajemen.editNilai(idEditNilai, nilai1Edit, nilai2Edit, nilai3Edit);
                     break;
                 case 6:
-//                    manajemen.tampilkanSemuaSiswa();
+//                    manajemen.tampilkanSiswaTerdaftar();
                     break;
                 case 7:
                     System.out.println("Keluar dari aplikasi. Terima kasih!");
@@ -95,4 +95,3 @@ public class Main {
         }
     }
 }
-
