@@ -447,12 +447,12 @@
                 formPanel.add(new JLabel("Tidak ada data siswa.", JLabel.CENTER));
             } else {
                 // Column names for the table
-                String[] columnNames = {"ID", "NIS", "Nama", "Kelas", "Foto", "Nilai 1", "Nilai 2", "Nilai 3"};
+                String[] columnNames = {"ID", "NIS", "Nama", "Kelas", "Foto", "Nilai 1", "Nilai 2", "Nilai 3", "Rata-rata"};
 
                 // Data for the table
                 ArrayList<Object[]> combinedData = new ArrayList<>();
                 for (Siswa siswa : manajemen.getDaftarSiswa()) {
-                    String fotoPath = siswa.getFoto();  // Assuming Siswa has a method getFoto()
+                    String fotoPath = siswa.getFoto(); // Assuming Siswa has a method getFoto()
                     ImageIcon imageIcon = null;
 
                     if (fotoPath != null && !fotoPath.isEmpty()) {
@@ -473,6 +473,9 @@
                         }
                     }
 
+                    // Calculate the average score
+                    double rataRata = (siswa.getNilai1() + siswa.getNilai2() + siswa.getNilai3()) / 3.0;
+
                     // Add the student's data to combinedData
                     combinedData.add(new Object[] {
                             siswa.getId(),
@@ -482,7 +485,8 @@
                             imageIcon != null ? imageIcon : new ImageIcon(), // Ensure imageIcon is not null
                             siswa.getNilai1(),     // Nilai mata pelajaran 1
                             siswa.getNilai2(),     // Nilai mata pelajaran 2
-                            siswa.getNilai3()      // Nilai mata pelajaran 3
+                            siswa.getNilai3(),     // Nilai mata pelajaran 3
+                            String.format("%.2f", rataRata) // Format rata-rata ke 2 desimal
                     });
                 }
 
@@ -498,7 +502,7 @@
                 };
 
                 // Set row height to display the image properly
-                siswaTable.setRowHeight(60);  // Increase this value to fit your images properly
+                siswaTable.setRowHeight(60); // Increase this value to fit your images properly
 
                 // Make the table scrollable
                 JScrollPane scrollPane = new JScrollPane(siswaTable);
